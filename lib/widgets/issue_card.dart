@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kanban_issues_app/models/issue.dart';
 
+import '../views/issue_details.dart';
+
 class IssueCard extends StatelessWidget {
   final Issue issue;
   const IssueCard({super.key, required this.issue});
@@ -40,7 +42,14 @@ class IssueCard extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => IssueDetails(issue: issue),
+                        ),
+                      );
+                    },
                     child: const Text(
                       'View Details',
                       style: TextStyle(color: Colors.white),
