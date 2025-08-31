@@ -7,17 +7,17 @@ class Issue {
   final DateTime createdAt;
   final IssueStatus status;
 
-  Issue({required this.id,
-  required this.title,
-  required this.description,
-  DateTime? createdAt,
-  this.status = IssueStatus.backlog})
-    : createdAt = createdAt ?? DateTime.now();
+  Issue({
+    required this.id,
+    required this.title,
+    required this.description,
+    DateTime? createdAt,
+    this.status = IssueStatus.backlog,
+  }) : createdAt = createdAt ?? DateTime.now();
 
   String get createdAtString => createdAt.toLocal().toString().split('.').first;
 
-
-Issue copyWith({
+  Issue copyWith({
     String? id,
     String? title,
     String? description,
@@ -32,4 +32,17 @@ Issue copyWith({
       createdAt: createdAt ?? this.createdAt,
     );
   }
+
+  factory Issue.fromJson(Map<String, dynamic> json) => Issue(
+    id: json['id'],
+    title: json['title'], 
+    description: json['description'],
+    createdAt: DateTime.parse(json['createdAt']),
+    status: IssueStatus.values.firstWhere(
+      
+      // convierte string a enum
+      (s) => s.name == json['status'],
+      orElse: () => IssueStatus.backlog,
+    ),
+  );
 }
