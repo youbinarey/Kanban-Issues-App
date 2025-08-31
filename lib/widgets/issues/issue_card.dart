@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kanban_issues_app/models/issue.dart';
 
+import '../../res/app_styles.dart';
 import '../../views/issues/issue_details.dart';
 
 class IssueCard extends StatelessWidget {
@@ -8,6 +9,17 @@ class IssueCard extends StatelessWidget {
   final ValueChanged<Issue>? onUpdated;
 
   const IssueCard({super.key, required this.issue, this.onUpdated});
+
+   static Color headerColor(IssueStatus status) {
+    switch (status) {
+      case IssueStatus.backlog:
+        return AppColor.backlog;
+      case IssueStatus.inProgress:
+        return AppColor.inProgress;
+      case IssueStatus.done:
+        return AppColor.done;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,48 +36,51 @@ class IssueCard extends StatelessWidget {
           children: [
             // HEADER
             Container(
-              decoration: const BoxDecoration(
-                color: Color.fromARGB(255, 143, 42, 42),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text(
-                    issue.id,
-                    style: const TextStyle(
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      final updated = await Navigator.push<Issue>(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => IssueDetails(issue: issue),
-                        ),
-                      );
-                      if(updated != null && onUpdated != null) onUpdated!(updated);
-                    },
-                    child: const Text(
-                      'View Details',
-                  
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  ),
-                ],
-              ),
+  decoration: BoxDecoration(
+    color: headerColor(issue.status) ,
+    borderRadius: BorderRadius.only(
+      topLeft: Radius.circular(12),
+      topRight: Radius.circular(12),
+    ),
+  ),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceAround,
+    children: [
+      Text(
+        issue.id,
+        style: const TextStyle(
+          fontSize: 16.0,
+          fontWeight: FontWeight.bold,
+          color: Colors.white, 
+        ),
+      ),
+      TextButton(
+        onPressed: () async {
+          final updated = await Navigator.push<Issue>(
+            context,
+            MaterialPageRoute(
+              builder: (context) => IssueDetails(issue: issue),
             ),
+          );
+          if (updated != null && onUpdated != null) onUpdated!(updated);
+        },
+        child: const Text(
+          'View Details',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 14,
+          ),
+        ),
+      ),
+    ],
+  ),
+),
 
             // BODY
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
+                
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // TITULO

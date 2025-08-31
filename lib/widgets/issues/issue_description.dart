@@ -15,11 +15,7 @@ class IssueDescriptionSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          issue.title,
-          style: const TextStyle(fontSize: 16, height: 1.4),
-        ),
-        const SizedBox(height: 12),
+        
 
         Expanded(
           child: SingleChildScrollView(
