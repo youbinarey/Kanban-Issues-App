@@ -4,7 +4,10 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:kanban_issues_app/models/issue.dart';
+import 'package:kanban_issues_app/res/app_styles.dart';
 import 'package:kanban_issues_app/widgets/issues/issue_card.dart';
+
+import '../widgets/issues/status_dropdow_issue.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -36,8 +39,12 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF3A6DE2),
-      appBar: AppBar(title: const Text('Last tickets')),
+      backgroundColor:Color.fromARGB(255, 19, 151, 228),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(40),
+        child: AppBar(title: const Text('ISSUES', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, letterSpacing: 2)), backgroundColor:const Color.fromARGB(255, 255, 255, 255),
+),
+      ),
       body: ListView.separated(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         itemCount: 3,
@@ -46,16 +53,16 @@ class _HomeViewState extends State<HomeView> {
         itemBuilder: (_, i) {
           switch (i) {
             case 0:
-              return _issuesLane(context, 'BACKLOG', IssueStatus.backlog);
+              return _issuesLane(context, IssueStatus.backlog);
             case 1:
               return _issuesLane(
                 context,
-                'IN PROGRESS',
                 IssueStatus.inProgress,
               );
             default:
-              return _issuesLane(context, 'DONE', IssueStatus.done);
+              return _issuesLane(context, IssueStatus.done);
           }
+        
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -76,7 +83,7 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 
-  Widget _issuesLane(BuildContext context, String title, IssueStatus status) {
+  Widget _issuesLane(BuildContext context, IssueStatus status) {
     const cardWidth = 300.0;
     const cardHeight = 150.0;
     final items = _issues.where((i) => i.status == status).toList();
@@ -84,7 +91,11 @@ class _HomeViewState extends State<HomeView> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: Theme.of(context).textTheme.titleMedium),
+        Text(
+          StatusDropdownPill.statusLabel(status),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, fontFamily: 'monospace',letterSpacing: 3, wordSpacing: 5)
+              .copyWith(color: AppColor.issueTypeTitle),
+        ),
         const SizedBox(height: 8),
         SizedBox(
           height: cardHeight + 24,
