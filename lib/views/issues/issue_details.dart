@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kanban_issues_app/models/issue.dart';
+import 'package:kanban_issues_app/widgets/issues/issue_card.dart';
 
 import '../../widgets/issues/issue_description.dart';
 import '../../widgets/issues/status_dropdow_issue.dart';
@@ -24,50 +25,79 @@ class _IssueDetailsState extends State<IssueDetails> {
   @override
   Widget build(BuildContext context) {
     return PopScope(
-      canPop: false, // bloque el pop bydefault
+      canPop: false,
       onPopInvokedWithResult: (didPop, result) {
         if (didPop) return;
         Navigator.pop(context, result ?? issue);
       },
       child: Scaffold(
-        appBar: AppBar(title: Text('Issue ${issue.id}'), actions: [
-            
-          ]
+              backgroundColor:Color.fromARGB(255, 19, 151, 228),
+  
+
+        appBar: AppBar(
+          backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+          elevation: 1,
+          title: Text(
+            issue.id,
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
+            elevation: 1,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: StatusDropdownPill(
-                  value: issue.status,
-                  onChanged: (newStatus) {
-                    setState(() {
-                      issue = issue.copyWith(
-                        status: newStatus,
-                      );
-                    });
-                  },
-                ),
-              ),
-              const SizedBox(height: 8),
+                children: [
+                  // STATUS
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      StatusDropdownPill(
+                        value: issue.status,
+                        onChanged: (newStatus) {
+                          setState(() {
+                            issue = issue.copyWith(status: newStatus);
+                          });
+                        },
+                      ),
+                      Text(
+                        issue.createdAtString,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
 
-              Text(
-                'Created At: ${issue.createdAtString}',
-                style: const TextStyle(color: Colors.grey),
-              ),
-              const SizedBox(height: 16),
+                  // TITLE
+                  Text(
+                    issue.title,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
 
-              //BLOQUE DESCRIPCION
-              Expanded(
-                child: IssueDescriptionSection(
-                  issue: issue,
-                ),
+                  // SEPARADOR
+                  Divider(
+                    color: IssueCard.headerColor(issue.status),
+                    thickness: 5,
+                  ),
+
+                  // DESCRIPTION
+                  Expanded(child: IssueDescriptionSection(issue: issue)),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
