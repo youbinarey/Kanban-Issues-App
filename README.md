@@ -7,9 +7,9 @@ Permite visualizar, clasificar y gestionar issues por estado en un tablero divid
 ---
 
 ## Vista de funcionalidades
-Cambio de estado de una issue.  
+Actualizar el estado de una issue desencadenando una nueva organización de las mismas.
 
-![Primera funcionalidad](docs/assets/first_feature.gif)
+![Primera funcionalidad](assets/img/first_feature.gif)
 
 ---
 
